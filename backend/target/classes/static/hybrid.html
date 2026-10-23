@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choose Your Own Hybrid Journey – TravelSmart</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/hybrid.css">
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="container navbar">
+      <a href="/index.html" class="brand-logo">
+        <div class="brand-icon-box">
+          <i data-lucide="compass" style="width: 24px; height: 24px;"></i>
+        </div>
+        <div class="brand-text-col">
+          <h1>TravelSmart <span class="brand-tag">India</span></h1>
+          <span class="brand-sub">Integrated Multimodal Transportation</span>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="/search.html" class="nav-item">
+          <i data-lucide="search" style="width: 16px; height: 16px;"></i> Search
+        </a>
+        <a href="/hybrid.html" class="nav-item active">
+          <i data-lucide="layers" style="width: 16px; height: 16px;"></i> Choose Hybrid Journey
+          <span class="flagship-pill">FLAGSHIP</span>
+        </a>
+        <a href="/bookings.html" class="nav-item">
+          <i data-lucide="ticket" style="width: 16px; height: 16px;"></i> My Bookings
+          <span id="bookingsCountBadge" class="nav-badge" style="display: none;">0</span>
+        </a>
+        <a href="/admin.html" id="adminNavBtn" class="nav-item" style="display: none;">
+          <i data-lucide="shield-check" style="width: 16px; height: 16px;"></i> Admin Panel
+        </a>
+      </nav>
+
+      <div class="nav-right">
+        <div class="currency-badge">₹ INR</div>
+        <div id="navbarAuthArea">
+          <a href="/login.html" class="btn-auth btn-auth-primary">Sign In</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hybrid Builder Content -->
+  <main class="container" style="padding-top: 28px;">
+    <!-- Flagship Title Header -->
+    <div style="margin-bottom: 24px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+        <span class="flagship-pill" style="font-size: 11px; padding: 3px 10px;">Flagship Innovation</span>
+        <span id="transferRiskBadge" style="font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 999px;">CALCULATING...</span>
+      </div>
+      <h2 style="font-size: 2rem; font-weight: 800; color: #10224D; letter-spacing: -0.5px;">
+        Choose Your Own Hybrid Journey
+      </h2>
+      <p style="color: #64748B; font-size: 14.5px;">
+        Architect custom multimodal routes across India by chaining flights, trains, and buses. Real-time transfer buffer validation, CO₂ savings evaluation, and MySQL persistence.
+      </p>
+    </div>
+
+    <!-- 2-Column Builder Grid -->
+    <div class="hybrid-builder-layout">
+      <!-- Left Column: Route Architect & Transfer Legs -->
+      <div class="builder-card">
+        <div class="builder-header">
+          <h2><i data-lucide="git-commit" style="width: 22px; height: 22px; color: #1677FF;"></i> Journey Legs & Continuity</h2>
+          <p>Each leg automatically connects to the next transfer city. Choose transport mode for each stage.</p>
+        </div>
+
+        <!-- Legs Container -->
+        <div id="legsContainer" class="legs-timeline">
+          <!-- Dynamically populated by hybrid.js -->
+        </div>
+
+        <!-- Add Leg Button -->
+        <button id="btnAddLeg" type="button" class="btn-add-leg">
+          <i data-lucide="plus-circle" style="width: 18px; height: 18px;"></i>
+          Add Intermediate Transfer Leg
+        </button>
+      </div>
+
+      <!-- Right Column: Real-time Metrics, Feasibility, and Map -->
+      <div>
+        <!-- Live Recalculated Summary Card -->
+        <div class="summary-panel-card" style="margin-bottom: 24px;">
+          <h3><i data-lucide="sliders" style="width: 18px; height: 18px; color: #10B981;"></i> Journey Evaluation</h3>
+
+          <div class="metrics-row">
+            <div class="metric-tile">
+              <div class="metric-tile-label">Total Fare</div>
+              <div id="totalPriceValue" class="metric-tile-value price">₹0</div>
+            </div>
+
+            <div class="metric-tile">
+              <div class="metric-tile-label">Total Travel Time</div>
+              <div id="totalDurationValue" class="metric-tile-value">0h 0m</div>
+            </div>
+
+            <div class="metric-tile">
+              <div class="metric-tile-label">Combined Layover</div>
+              <div id="totalLayoverValue" class="metric-tile-value">0 mins</div>
+            </div>
+
+            <div class="metric-tile">
+              <div class="metric-tile-label">CO₂ Reduction</div>
+              <div id="co2SavedValue" class="metric-tile-value eco">-0%</div>
+            </div>
+          </div>
+
+          <!-- Feasibility Alerts -->
+          <div style="font-size: 11.5px; font-weight: 700; color: #64748B; text-transform: uppercase; margin-bottom: 8px;">
+            Transfer Feasibility & Buffer Analysis:
+          </div>
+          <div id="hybridAlerts" class="alerts-panel">
+            <div class="alert-item info">
+              <i data-lucide="check-circle"></i> Analyzing transfer connections...
+            </div>
+          </div>
+
+          <!-- Save Button -->
+          <button id="btnSaveHybrid" type="button" class="btn-save-hybrid">
+            <i data-lucide="bookmark-plus" style="width: 18px; height: 18px;"></i> Save Journey to Database
+          </button>
+        </div>
+
+        <!-- Route Visualization Map Card -->
+        <div class="summary-panel-card">
+          <h3 style="font-size: 1.1rem; margin-bottom: 12px;">
+            <i data-lucide="map" style="width: 16px; height: 16px; color: #1677FF;"></i> Multimodal Route Path
+          </h3>
+          <div id="hybridMapContainer" style="width: 100%; height: 320px; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light);"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h5 style="font-size: 16px; font-weight: 800; color: #FFF; display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="compass" style="width: 20px; height: 20px; color: #1677FF;"></i> TravelSmart India
+        </h5>
+        <p style="font-size: 13px; color: #94A3B8; margin-top: 8px; line-height: 1.6;">
+          Flagship Hybrid Multimodal Journey Builder powered by Java Spring Boot and MySQL.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="/search.html">Search Transport</a></li>
+          <li><a href="/hybrid.html">Choose Hybrid Journey</a></li>
+          <li><a href="/bookings.html">My Bookings</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Multimodal Modes</h5>
+        <ul>
+          <li><span>Domestic Flights (IndiGo, Air India)</span></li>
+          <li><span>IRCTC Railways (Vande Bharat, Rajdhani)</span></li>
+          <li><span>State & Private Buses (MSRTC, Zingbus)</span></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>System</h5>
+        <ul>
+          <li><span style="color: #94A3B8;">Currency: <b>₹ Indian Rupee</b></span></li>
+          <li><span style="color: #94A3B8;">Continuity: <b>Chain Validation</b></span></li>
+          <li><a href="/admin.html">Admin Operations</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      &copy; 2026 TravelSmart Technologies India Pvt. Ltd. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/hybrid.js"></script>
+  <script>
+    if (window.lucide) window.lucide.createIcons();
+  </script>
+</body>
+</html>

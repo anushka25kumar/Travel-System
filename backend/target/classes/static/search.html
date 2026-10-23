@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Indian Transport – TravelSmart</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/search.css">
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="container navbar">
+      <a href="/index.html" class="brand-logo">
+        <div class="brand-icon-box">
+          <i data-lucide="compass" style="width: 24px; height: 24px;"></i>
+        </div>
+        <div class="brand-text-col">
+          <h1>TravelSmart <span class="brand-tag">India</span></h1>
+          <span class="brand-sub">Integrated Multimodal Transportation</span>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="/search.html" class="nav-item active">
+          <i data-lucide="search" style="width: 16px; height: 16px;"></i> Search
+        </a>
+        <a href="/hybrid.html" class="nav-item">
+          <i data-lucide="layers" style="width: 16px; height: 16px;"></i> Choose Hybrid Journey
+          <span class="flagship-pill">FLAGSHIP</span>
+        </a>
+        <a href="/bookings.html" class="nav-item">
+          <i data-lucide="ticket" style="width: 16px; height: 16px;"></i> My Bookings
+          <span id="bookingsCountBadge" class="nav-badge" style="display: none;">0</span>
+        </a>
+        <a href="/admin.html" id="adminNavBtn" class="nav-item" style="display: none;">
+          <i data-lucide="shield-check" style="width: 16px; height: 16px;"></i> Admin Panel
+        </a>
+      </nav>
+
+      <div class="nav-right">
+        <div class="currency-badge">₹ INR</div>
+        <div id="navbarAuthArea">
+          <a href="/login.html" class="btn-auth btn-auth-primary">Sign In</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Search Header Controls -->
+  <main class="container" style="padding-top: 24px;">
+    <!-- Compact Search Controls Card -->
+    <div class="search-box-card" style="margin-bottom: 20px; padding: 18px 24px;">
+      <div class="search-form-grid">
+        <div class="input-field-group">
+          <label><i data-lucide="map-pin" style="width: 12px; height: 12px;"></i> Origin</label>
+          <input type="text" id="searchSource" value="Pune" placeholder="Origin City" list="citiesSourceList" class="input-control" autocomplete="off">
+          <datalist id="citiesSourceList"></datalist>
+        </div>
+
+        <div class="input-field-group">
+          <label><i data-lucide="navigation" style="width: 12px; height: 12px;"></i> Destination</label>
+          <input type="text" id="searchDest" value="Delhi" placeholder="Destination City" list="citiesDestList" class="input-control" autocomplete="off">
+          <datalist id="citiesDestList"></datalist>
+        </div>
+
+        <div class="input-field-group">
+          <label><i data-lucide="calendar" style="width: 12px; height: 12px;"></i> Date</label>
+          <input type="date" id="searchDate" value="2026-10-25" class="input-control">
+        </div>
+
+        <div class="input-field-group">
+          <label><i data-lucide="users" style="width: 12px; height: 12px;"></i> Pax</label>
+          <input type="number" id="searchPassengers" value="1" min="1" max="10" class="input-control">
+        </div>
+
+        <button id="btnSubmitSearch" class="btn-search" style="padding: 12px 22px;">
+          <i data-lucide="search" style="width: 16px; height: 16px;"></i> Search
+        </button>
+      </div>
+
+      <!-- Quick Route Suggestions -->
+      <div class="quick-routes-bar" style="margin-top: 12px;">
+        <span class="quick-routes-label">Corridors:</span>
+        <span class="route-chip" onclick="setQuickRoute('Pune', 'Delhi')">Pune → Delhi</span>
+        <span class="route-chip" onclick="setQuickRoute('Pune', 'Mumbai')">Pune → Mumbai</span>
+        <span class="route-chip" onclick="setQuickRoute('Mumbai', 'Bengaluru')">Mumbai → Bengaluru</span>
+        <span class="route-chip" onclick="setQuickRoute('Delhi', 'Jaipur')">Delhi → Jaipur</span>
+        <span class="route-chip" onclick="setQuickRoute('Chandigarh', 'Delhi')">Chandigarh → Delhi</span>
+        <span class="route-chip" onclick="setQuickRoute('Mumbai', 'Goa')">Mumbai → Goa</span>
+      </div>
+    </div>
+
+    <!-- Mode Tabs & Quick Sort Bar -->
+    <div class="filter-tabs-wrapper">
+      <div class="mode-tabs">
+        <button class="mode-tab-btn active" data-mode="ALL">
+          <i data-lucide="grid" style="width: 14px; height: 14px;"></i> All Modes
+        </button>
+        <button class="mode-tab-btn" data-mode="FLIGHT">
+          <i data-lucide="plane" style="width: 14px; height: 14px;"></i> Flights
+        </button>
+        <button class="mode-tab-btn" data-mode="TRAIN">
+          <i data-lucide="train" style="width: 14px; height: 14px;"></i> Trains
+        </button>
+        <button class="mode-tab-btn" data-mode="BUS">
+          <i data-lucide="bus" style="width: 14px; height: 14px;"></i> Buses
+        </button>
+        <button class="mode-tab-btn" data-mode="HYBRID">
+          <i data-lucide="layers" style="width: 14px; height: 14px;"></i> Hybrid
+        </button>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span id="resultsCountBadge" class="seats-badge" style="font-size: 12px; padding: 6px 12px;">Searching...</span>
+        <select id="sortSelect" class="sort-select">
+          <option value="RECOMMENDED">Sort: Recommended</option>
+          <option value="CHEAPEST">Sort: Price (Lowest First)</option>
+          <option value="FASTEST">Sort: Duration (Fastest First)</option>
+          <option value="ECO_FRIENDLY">Sort: Eco (Lowest CO₂)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Live Status Banner -->
+    <div class="status-banner">
+      <div class="status-banner-left">
+        <span class="status-badge-demo" style="background: #ECFDF5; color: #065F46; border-color: #A7F3D0; display: inline-flex; align-items: center; gap: 6px;">
+          <span style="width: 7px; height: 7px; border-radius: 50%; background: #10B981; display: inline-block;"></span> MySQL Live (10s Sync)
+        </span>
+        <span id="searchStatusMessage">Showing verified schedules from MySQL database | Real-time fares in ₹ INR</span>
+      </div>
+      <div style="font-size: 11px; color: #1E40AF; font-weight: 600;">
+        Pessimistic Row-Locking Enabled
+      </div>
+    </div>
+
+    <!-- 2-Column Results Layout: Cards on Left, Sticky Map on Right -->
+    <div class="search-results-layout">
+      <!-- Left Column: Search Results List -->
+      <div id="journeyResultsList">
+        <!-- Rendered by search.js -->
+      </div>
+
+      <!-- Right Column: Interactive Route Map -->
+      <div class="map-sidebar-card">
+        <div class="map-card-header">
+          <h4><i data-lucide="map" style="width: 16px; height: 16px; color: #1677FF;"></i> Route Visualizer</h4>
+          <span style="font-size: 11.5px; color: #64748B;">India Coordinates</span>
+        </div>
+        <div id="routeMapContainer"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Booking Modal Dialog -->
+  <div id="bookingModal" class="modal-backdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="bookingModalTitle">Book Transport Journey</h3>
+        <button class="btn-close-modal" onclick="closeBookingModal()">&times;</button>
+      </div>
+
+      <div id="bookingModalAlert" style="display: none; background: #FEF2F2; color: #991B1B; padding: 10px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; margin-bottom: 14px; border: 1px solid #FECACA;"></div>
+
+      <div id="bookingModalDetails">
+        <!-- Details injected dynamically by booking.js -->
+      </div>
+
+      <form id="bookingForm">
+        <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px;">
+          <div class="input-field-group">
+            <label>Passenger Full Name</label>
+            <input type="text" id="passengerName" class="input-control" placeholder="e.g. Rahul Sharma" required>
+          </div>
+
+          <div class="input-field-group">
+            <label>Email Address (for Ticket & PNR)</label>
+            <input type="email" id="passengerEmail" class="input-control" placeholder="rahul@example.com" required>
+          </div>
+
+          <div class="input-field-group">
+            <label>Mobile Number (+91)</label>
+            <input type="tel" id="passengerPhone" class="input-control" placeholder="9876543210" required>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-top: 1px solid #E2E8F0; margin-bottom: 16px;">
+          <span style="font-size: 14px; color: #64748B; font-weight: 600;">Total Payable Fare:</span>
+          <span id="bookingModalTotal" style="font-size: 1.5rem; font-weight: 800; color: #10224D;">₹0</span>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button type="button" onclick="closeBookingModal()" class="btn-secondary" style="flex: 1; padding: 12px;">
+            Cancel
+          </button>
+          <button type="submit" id="btnConfirmBooking" class="btn-book" style="flex: 2; padding: 12px; font-size: 14px;">
+            Confirm & Reserve Seat
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h5 style="font-size: 16px; font-weight: 800; color: #FFF; display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="compass" style="width: 20px; height: 20px; color: #1677FF;"></i> TravelSmart India
+        </h5>
+        <p style="font-size: 13px; color: #94A3B8; margin-top: 8px; line-height: 1.6;">
+          Next-generation Integrated Multimodal Transportation System powered by Java 21 Spring Boot and MySQL database.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="/search.html">Search Transport</a></li>
+          <li><a href="/hybrid.html">Choose Hybrid Journey</a></li>
+          <li><a href="/bookings.html">My Bookings</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Transportation</h5>
+        <ul>
+          <li><a href="/search.html">IndiGo & Air India Flights</a></li>
+          <li><a href="/search.html">IRCTC Vande Bharat & Trains</a></li>
+          <li><a href="/search.html">MSRTC & KSRTC Express Buses</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Inventory</h5>
+        <ul>
+          <li><span style="color: #94A3B8;">Pricing: <b>₹ INR</b></span></li>
+          <li><span style="color: #94A3B8;">Concurrency: <b>Pessimistic Row Lock</b></span></li>
+          <li><a href="/admin.html">Admin Management</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      &copy; 2026 TravelSmart Technologies India Pvt. Ltd. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/search.js"></script>
+  <script src="/js/booking.js"></script>
+  <script>
+    if (window.lucide) window.lucide.createIcons();
+  </script>
+</body>
+</html>

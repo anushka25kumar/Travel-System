@@ -1,0 +1,265 @@
+/* ===================================================================
+   TravelSmart - Choose Your Own Hybrid Journey CSS (static/css/hybrid.css)
+   Flagship Feature Route Builder
+   =================================================================== */
+
+.hybrid-builder-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 28px;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 1024px) {
+  .hybrid-builder-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.builder-card {
+  background: #FFF;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-light);
+  padding: 28px;
+  box-shadow: var(--shadow-md);
+}
+
+.builder-header {
+  margin-bottom: 24px;
+}
+
+.builder-header h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary-navy);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.builder-header p {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.legs-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.leg-card {
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.leg-card:hover {
+  border-color: #BFDBFE;
+  background: #FFF;
+}
+
+.leg-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.leg-badge {
+  background: var(--primary-navy);
+  color: #FFF;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+}
+
+.leg-controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 640px) {
+  .leg-controls-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mode-radio-group {
+  display: flex;
+  gap: 4px;
+  background: #E2E8F0;
+  padding: 3px;
+  border-radius: var(--radius-md);
+}
+
+.mode-radio-btn {
+  flex: 1;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 4px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.mode-radio-btn.active {
+  background: #FFF;
+  color: var(--primary-navy);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.btn-remove-leg {
+  background: transparent;
+  border: none;
+  color: #EF4444;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-add-leg {
+  background: #EFF6FF;
+  border: 1.5px dashed #93C5FD;
+  color: var(--primary-blue);
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-add-leg:hover {
+  background: #DBEAFE;
+  border-color: var(--primary-blue);
+}
+
+/* Summary Card */
+.summary-panel-card {
+  background: #FFF;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-light);
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 96px;
+}
+
+.summary-panel-card h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--primary-navy);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.metrics-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.metric-tile {
+  background: #F8FAFC;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid #E2E8F0;
+}
+
+.metric-tile-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.metric-tile-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--primary-navy);
+  margin-top: 4px;
+}
+
+.metric-tile-value.price {
+  color: var(--primary-blue);
+}
+
+.metric-tile-value.eco {
+  color: #059669;
+}
+
+.alerts-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.alert-item {
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.alert-item.info {
+  background: #EFF6FF;
+  color: #1E40AF;
+  border: 1px solid #BFDBFE;
+}
+
+.alert-item.warning {
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+.btn-save-hybrid {
+  width: 100%;
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: #FFF;
+  border: none;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+  transition: all 0.15s ease;
+}
+
+.btn-save-hybrid:hover {
+  background: #047857;
+}

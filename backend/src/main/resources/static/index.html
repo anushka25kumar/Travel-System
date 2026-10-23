@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TravelSmart – Integrated Multimodal Transportation System (India)</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="container navbar">
+      <a href="/index.html" class="brand-logo">
+        <div class="brand-icon-box">
+          <i data-lucide="compass" style="width: 24px; height: 24px;"></i>
+        </div>
+        <div class="brand-text-col">
+          <h1>TravelSmart <span class="brand-tag">India</span></h1>
+          <span class="brand-sub">Integrated Multimodal Transportation</span>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="/search.html" class="nav-item">
+          <i data-lucide="search" style="width: 16px; height: 16px;"></i> Search
+        </a>
+        <a href="/hybrid.html" class="nav-item">
+          <i data-lucide="layers" style="width: 16px; height: 16px;"></i> Choose Hybrid Journey
+          <span class="flagship-pill">FLAGSHIP</span>
+        </a>
+        <a href="/bookings.html" class="nav-item">
+          <i data-lucide="ticket" style="width: 16px; height: 16px;"></i> My Bookings
+          <span id="bookingsCountBadge" class="nav-badge" style="display: none;">0</span>
+        </a>
+        <a href="/admin.html" id="adminNavBtn" class="nav-item" style="display: none;">
+          <i data-lucide="shield-check" style="width: 16px; height: 16px;"></i> Admin Panel
+        </a>
+      </nav>
+
+      <div class="nav-right">
+        <div class="currency-badge">₹ INR</div>
+        <div id="navbarAuthArea">
+          <a href="/login.html" class="btn-auth btn-auth-primary">Sign In</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero & Search Section -->
+  <main class="container hero-section">
+    <div class="hero-title-area">
+      <h2>Seamless Multimodal Travel Across India</h2>
+      <p>Search, compare, and book Flights, Trains, Buses, and Custom Hybrid Journeys in Indian Rupees (₹).</p>
+    </div>
+
+    <!-- Search Box Card -->
+    <div class="search-box-card">
+      <form id="heroSearchForm" action="/search.html" method="GET">
+        <div class="search-form-grid">
+          <!-- Origin -->
+          <div class="input-field-group">
+            <label><i data-lucide="map-pin" style="width: 13px; height: 13px;"></i> Origin City</label>
+            <input type="text" id="heroSource" name="source" value="Pune" placeholder="e.g. Pune" list="citiesList" class="input-control" required autocomplete="off">
+          </div>
+
+          <!-- Destination -->
+          <div class="input-field-group">
+            <label><i data-lucide="navigation" style="width: 13px; height: 13px;"></i> Destination City</label>
+            <input type="text" id="heroDest" name="destination" value="Delhi" placeholder="e.g. Delhi" list="citiesList" class="input-control" required autocomplete="off">
+          </div>
+
+          <!-- Date -->
+          <div class="input-field-group">
+            <label><i data-lucide="calendar" style="width: 13px; height: 13px;"></i> Travel Date</label>
+            <input type="date" id="heroDate" name="date" value="2026-10-25" class="input-control" required>
+          </div>
+
+          <!-- Passengers -->
+          <div class="input-field-group">
+            <label><i data-lucide="users" style="width: 13px; height: 13px;"></i> Passengers</label>
+            <input type="number" id="heroPassengers" name="passengers" value="1" min="1" max="10" class="input-control">
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn-search">
+            <i data-lucide="search" style="width: 18px; height: 18px;"></i> Search Journeys
+          </button>
+        </div>
+
+        <!-- Datalist for Indian Cities -->
+        <datalist id="citiesList"></datalist>
+
+        <!-- Quick Routes Bar -->
+        <div class="quick-routes-bar">
+          <span class="quick-routes-label">Popular Indian Routes:</span>
+          <span class="route-chip" onclick="setQuickRoute('Pune', 'Delhi')">Pune → Delhi</span>
+          <span class="route-chip" onclick="setQuickRoute('Pune', 'Mumbai')">Pune → Mumbai</span>
+          <span class="route-chip" onclick="setQuickRoute('Mumbai', 'Bengaluru')">Mumbai → Bengaluru</span>
+          <span class="route-chip" onclick="setQuickRoute('Delhi', 'Jaipur')">Delhi → Jaipur</span>
+          <span class="route-chip" onclick="setQuickRoute('Chandigarh', 'Delhi')">Chandigarh → Delhi</span>
+          <span class="route-chip" onclick="setQuickRoute('Mumbai', 'Goa')">Mumbai → Goa</span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Flagship Feature Banner: Choose Your Own Hybrid Journey -->
+    <div style="background: linear-gradient(135deg, #10224D 0%, #1677FF 100%); border-radius: var(--radius-xl); padding: 32px; color: #FFF; margin-bottom: 40px; box-shadow: var(--shadow-lg); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px;">
+      <div style="max-width: 680px;">
+        <span style="background: rgba(255, 255, 255, 0.2); padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase;">
+          Flagship Feature
+        </span>
+        <h3 style="font-size: 1.8rem; font-weight: 800; margin: 12px 0 8px;">Choose Your Own Hybrid Journey</h3>
+        <p style="color: #E2E8F0; font-size: 14.5px; line-height: 1.6;">
+          Build your custom multimodal itinerary across Indian cities. Seamlessly combine bus, rail, and flight legs (e.g. Pune &rarr; Mumbai via Shivneri Bus, Mumbai &rarr; Jaipur via IndiGo, Jaipur &rarr; Delhi via Vande Bharat). Check transfer feasibility, calculate layover risks, and evaluate CO₂ savings in real time.
+        </p>
+      </div>
+      <div>
+        <a href="/hybrid.html" class="btn-book" style="background: #FFF; color: #10224D; font-size: 15px; padding: 14px 28px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-weight: 800; box-shadow: 0 4px 14px rgba(0,0,0,0.15);">
+          Launch Route Builder <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Features 3-Column Highlights -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 48px;">
+      <div style="background: #FFF; border-radius: var(--radius-lg); border: 1px solid var(--border-light); padding: 24px; box-shadow: var(--shadow-sm);">
+        <div style="width: 44px; height: 44px; border-radius: 10px; background: #E8F2FF; color: #1677FF; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+          <i data-lucide="plane" style="width: 22px; height: 22px;"></i>
+        </div>
+        <h4 style="font-size: 1.15rem; font-weight: 800; color: #10224D; margin-bottom: 8px;">Indian Aviation Network</h4>
+        <p style="font-size: 13.5px; color: #64748B; line-height: 1.6;">
+          Real domestic flight schedules and inventory for major carriers including IndiGo, Air India, SpiceJet, and Vistara connecting Pune, Delhi, Mumbai, Bengaluru, and 16+ other tier 1 and tier 2 hubs.
+        </p>
+      </div>
+
+      <div style="background: #FFF; border-radius: var(--radius-lg); border: 1px solid var(--border-light); padding: 24px; box-shadow: var(--shadow-sm);">
+        <div style="width: 44px; height: 44px; border-radius: 10px; background: #F9F0FF; color: #722ED1; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+          <i data-lucide="train" style="width: 22px; height: 22px;"></i>
+        </div>
+        <h4 style="font-size: 1.15rem; font-weight: 800; color: #10224D; margin-bottom: 8px;">Indian Railways IRCTC Corridors</h4>
+        <p style="font-size: 13.5px; color: #64748B; line-height: 1.6;">
+          High-speed Vande Bharat Express, Rajdhani, Shatabdi, and Duronto trains with verified Indian railway schedules, classes, and realistic base fares in ₹ INR.
+        </p>
+      </div>
+
+      <div style="background: #FFF; border-radius: var(--radius-lg); border: 1px solid var(--border-light); padding: 24px; box-shadow: var(--shadow-sm);">
+        <div style="width: 44px; height: 44px; border-radius: 10px; background: #FFF7E6; color: #D46B08; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+          <i data-lucide="bus" style="width: 22px; height: 22px;"></i>
+        </div>
+        <h4 style="font-size: 1.15rem; font-weight: 800; color: #10224D; margin-bottom: 8px;">Intercity Express Buses</h4>
+        <p style="font-size: 13.5px; color: #64748B; line-height: 1.6;">
+          State-run and premium intercity bus operators like MSRTC Shivneri, KSRTC Airavat Club Class, Zingbus, and Intrcity SmartBus providing high-frequency connections.
+        </p>
+      </div>
+    </div>
+
+    <!-- Popular Corridors Cards -->
+    <div style="margin-bottom: 48px;">
+      <h3 style="font-size: 1.4rem; font-weight: 800; color: #10224D; margin-bottom: 20px;">Top Corridors with Multimodal Options</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px;">
+        
+        <div class="journey-card" style="margin-bottom: 0; cursor: pointer;" onclick="window.location.href='/search.html?source=Pune&destination=Delhi'">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-weight: 800; font-size: 16px; color: #10224D;">Pune ⇄ Delhi</span>
+            <span class="recommendation-pill RECOMMENDED">Popular</span>
+          </div>
+          <div style="font-size: 12.5px; color: #64748B; margin-bottom: 12px;">Flights, Duronto Express, & Hybrid Route</div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 11.5px; color: #059669; font-weight: 700;">From ₹2,450</span>
+            <span style="color: #1677FF; font-size: 13px; font-weight: 700;">Search →</span>
+          </div>
+        </div>
+
+        <div class="journey-card" style="margin-bottom: 0; cursor: pointer;" onclick="window.location.href='/search.html?source=Pune&destination=Mumbai'">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-weight: 800; font-size: 16px; color: #10224D;">Pune ⇄ Mumbai</span>
+            <span class="recommendation-pill FASTEST">Fast</span>
+          </div>
+          <div style="font-size: 12.5px; color: #64748B; margin-bottom: 12px;">Vande Bharat, Deccan Queen, Shivneri Bus</div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 11.5px; color: #059669; font-weight: 700;">From ₹480</span>
+            <span style="color: #1677FF; font-size: 13px; font-weight: 700;">Search →</span>
+          </div>
+        </div>
+
+        <div class="journey-card" style="margin-bottom: 0; cursor: pointer;" onclick="window.location.href='/search.html?source=Mumbai&destination=Bengaluru'">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-weight: 800; font-size: 16px; color: #10224D;">Mumbai ⇄ Bengaluru</span>
+            <span class="recommendation-pill CHEAPEST">Value</span>
+          </div>
+          <div style="font-size: 12.5px; color: #64748B; margin-bottom: 12px;">IndiGo, Udyan Express, KSRTC Sleeper</div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 11.5px; color: #059669; font-weight: 700;">From ₹1,250</span>
+            <span style="color: #1677FF; font-size: 13px; font-weight: 700;">Search →</span>
+          </div>
+        </div>
+
+        <div class="journey-card" style="margin-bottom: 0; cursor: pointer;" onclick="window.location.href='/search.html?source=Delhi&destination=Jaipur'">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-weight: 800; font-size: 16px; color: #10224D;">Delhi ⇄ Jaipur</span>
+            <span class="recommendation-pill ECO_FRIENDLY">Eco</span>
+          </div>
+          <div style="font-size: 12.5px; color: #64748B; margin-bottom: 12px;">Vande Bharat, Double Decker, Zingbus</div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 11.5px; color: #059669; font-weight: 700;">From ₹550</span>
+            <span style="color: #1677FF; font-size: 13px; font-weight: 700;">Search →</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h5 style="font-size: 16px; font-weight: 800; color: #FFF; display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="compass" style="width: 20px; height: 20px; color: #1677FF;"></i> TravelSmart India
+        </h5>
+        <p style="font-size: 13px; color: #94A3B8; margin-top: 8px; line-height: 1.6;">
+          Next-generation Integrated Multimodal Transportation System powered by Java 21 Spring Boot and MySQL database. Built for seamless booking across Indian air, rail, and road networks.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="/search.html">Search Transport</a></li>
+          <li><a href="/hybrid.html">Choose Hybrid Journey</a></li>
+          <li><a href="/bookings.html">My Bookings</a></li>
+          <li><a href="/login.html">Sign In / Register</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Modes Covered</h5>
+        <ul>
+          <li><a href="/search.html">Domestic Flights</a></li>
+          <li><a href="/search.html">Indian Railways (IRCTC)</a></li>
+          <li><a href="/search.html">Intercity Express Buses</a></li>
+          <li><a href="/hybrid.html">Multimodal Combinations</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>System Info</h5>
+        <ul>
+          <li><span style="color: #94A3B8;">Currency: <b>₹ Indian Rupee</b></span></li>
+          <li><span style="color: #94A3B8;">Server: <b>Spring Boot (Port 8080)</b></span></li>
+          <li><span style="color: #94A3B8;">Database: <b>MySQL 8+ (Flyway)</b></span></li>
+          <li><a href="/admin.html">Admin Operations</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      &copy; 2026 TravelSmart Technologies India Pvt. Ltd. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    if (window.lucide) window.lucide.createIcons();
+
+    // Populate City Datalist
+    window.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const cities = await window.api.getCities();
+        const datalist = document.getElementById('citiesList');
+        if (datalist && cities) {
+          datalist.innerHTML = cities.map(c => `<option value="${c.cityName}">`).join('');
+        }
+      } catch (e) {
+        console.warn('City datalist load warning:', e);
+      }
+    });
+
+    function setQuickRoute(src, dst) {
+      document.getElementById('heroSource').value = src;
+      document.getElementById('heroDest').value = dst;
+    }
+  </script>
+</body>
+</html>

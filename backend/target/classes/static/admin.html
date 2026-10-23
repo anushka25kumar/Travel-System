@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Operations Center – TravelSmart India</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="container navbar">
+      <a href="/index.html" class="brand-logo">
+        <div class="brand-icon-box">
+          <i data-lucide="compass" style="width: 24px; height: 24px;"></i>
+        </div>
+        <div class="brand-text-col">
+          <h1>TravelSmart <span class="brand-tag">India</span></h1>
+          <span class="brand-sub">Integrated Multimodal Transportation</span>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="/search.html" class="nav-item">
+          <i data-lucide="search" style="width: 16px; height: 16px;"></i> Search
+        </a>
+        <a href="/hybrid.html" class="nav-item">
+          <i data-lucide="layers" style="width: 16px; height: 16px;"></i> Choose Hybrid Journey
+          <span class="flagship-pill">FLAGSHIP</span>
+        </a>
+        <a href="/bookings.html" class="nav-item">
+          <i data-lucide="ticket" style="width: 16px; height: 16px;"></i> My Bookings
+          <span id="bookingsCountBadge" class="nav-badge" style="display: none;">0</span>
+        </a>
+        <a href="/admin.html" id="adminNavBtn" class="nav-item active">
+          <i data-lucide="shield-check" style="width: 16px; height: 16px;"></i> Admin Panel
+        </a>
+      </nav>
+
+      <div class="nav-right">
+        <div class="currency-badge">₹ INR</div>
+        <div id="navbarAuthArea">
+          <a href="/login.html" class="btn-auth btn-auth-primary">Sign In</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Admin Dashboard Container -->
+  <main class="container" style="padding-top: 28px; padding-bottom: 60px;">
+    <!-- Authorization Notice Banner -->
+    <div id="adminAuthNotice" style="display: none; background: #FEF3C7; border: 1px solid #FDE68A; color: #92400E; padding: 14px 20px; border-radius: var(--radius-md); margin-bottom: 24px; font-size: 13.5px; font-weight: 600;">
+      <i data-lucide="alert-triangle" style="width: 18px; height: 18px; display: inline-block; vertical-align: middle; margin-right: 8px;"></i>
+      Admin access mode. If you are not signed in as an administrator, please <a href="/login.html" style="color: #B45309; text-decoration: underline; font-weight: 700;">Sign In with admin@travelsmart.in</a> to unlock unrestricted operational control.
+    </div>
+
+    <!-- Header Section -->
+    <div style="margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+      <div>
+        <h2 style="font-size: 1.85rem; font-weight: 800; color: #10224D; letter-spacing: -0.5px;">
+          Admin Control Center & Operations
+        </h2>
+        <p style="color: #64748B; font-size: 14px; margin-top: 4px;">
+          Live control of ticket pricing in ₹ INR, seat inventory capacity, and Indian transport operators.
+        </p>
+      </div>
+      <div>
+        <span class="status-badge-demo" style="font-size: 11px; padding: 6px 14px;">
+          Connected to MySQL 8+
+        </span>
+      </div>
+    </div>
+
+    <!-- 4 KPI Metrics Grid -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-icon-box kpi-icon-blue">
+          <i data-lucide="ticket"></i>
+        </div>
+        <div>
+          <div class="kpi-label">Total Bookings</div>
+          <div id="kpiTotalBookings" class="kpi-value">0</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-box kpi-icon-green">
+          <i data-lucide="indian-rupee"></i>
+        </div>
+        <div>
+          <div class="kpi-label">Gross Revenue</div>
+          <div id="kpiTotalRevenue" class="kpi-value">₹0</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-box kpi-icon-purple">
+          <i data-lucide="truck"></i>
+        </div>
+        <div>
+          <div class="kpi-label">Active Transports</div>
+          <div id="kpiTotalTransports" class="kpi-value">0</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-box kpi-icon-amber">
+          <i data-lucide="calendar"></i>
+        </div>
+        <div>
+          <div class="kpi-label">Live Schedules</div>
+          <div id="kpiTotalSchedules" class="kpi-value">0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 1: Live Schedule Pricing & Seat Capacity Manager -->
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <div>
+          <h3><i data-lucide="edit-3" style="width: 18px; height: 18px; color: #1677FF;"></i> Schedule Pricing & Seat Capacity Editor</h3>
+          <p style="font-size: 12.5px; color: #64748B; margin-top: 2px;">
+            Directly update base fare in ₹ INR and remaining seats. Changes take effect instantly for all searching users.
+          </p>
+        </div>
+        <div>
+          <input type="text" id="scheduleSearchInput" class="input-control" placeholder="Search route or operator..." style="width: 260px; padding: 8px 12px; font-size: 13px;">
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Transport & Operator</th>
+              <th>Corridor Route</th>
+              <th>Timings</th>
+              <th>Base Price (₹)</th>
+              <th>Seats Available</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="schedulesTableBody">
+            <!-- Injected by admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 2: Fleet Management (Add New Transport & Current Fleet) -->
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <h3><i data-lucide="plus-circle" style="width: 18px; height: 18px; color: #059669;"></i> Add New Transport Service</h3>
+      </div>
+
+      <form id="addTransportForm" style="margin-bottom: 28px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; align-items: end;">
+          <div class="input-field-group">
+            <label>Mode Type</label>
+            <select id="newTransportType" class="input-control" required>
+              <option value="FLIGHT">Flight</option>
+              <option value="TRAIN">Train</option>
+              <option value="BUS">Bus</option>
+            </select>
+          </div>
+
+          <div class="input-field-group">
+            <label>Operator Name</label>
+            <input type="text" id="newTransportOperator" class="input-control" placeholder="e.g. Akasa Air" required>
+          </div>
+
+          <div class="input-field-group">
+            <label>Service Number</label>
+            <input type="text" id="newTransportNumber" class="input-control" placeholder="QP-1322" required>
+          </div>
+
+          <div class="input-field-group">
+            <label>Total Capacity</label>
+            <input type="number" id="newTransportCapacity" class="input-control" value="180" min="1" required>
+          </div>
+
+          <div class="input-field-group">
+            <label>Avg Speed (km/h)</label>
+            <input type="number" id="newTransportSpeed" class="input-control" value="650" min="10">
+          </div>
+
+          <div class="input-field-group">
+            <label>Carbon (g/km)</label>
+            <input type="number" id="newTransportCarbon" class="input-control" value="115" min="1">
+          </div>
+
+          <div>
+            <button type="submit" class="btn-search" style="padding: 12px 20px; font-size: 13.5px; width: 100%;">
+              <i data-lucide="plus" style="width: 16px; height: 16px;"></i> Add Service
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <div class="admin-card-header" style="margin-top: 10px; padding-top: 14px;">
+        <h3><i data-lucide="layers" style="width: 18px; height: 18px; color: #1677FF;"></i> Current Indian Transport Fleet</h3>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Mode</th>
+              <th>Operator Name</th>
+              <th>Service Number</th>
+              <th>Capacity</th>
+              <th>Avg Speed</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="transportsTableBody">
+            <!-- Injected by admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="container footer-bottom">
+      &copy; 2026 TravelSmart Technologies India Pvt. Ltd. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin.js"></script>
+  <script>
+    if (window.lucide) window.lucide.createIcons();
+  </script>
+</body>
+</html>
